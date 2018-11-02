@@ -8,5 +8,5 @@ do
 		Price : \t $price \n\
 		Quantity : \t $quantity \n"
 
-done < $1
+done < "$1"
 IFS=$OLDIFS
