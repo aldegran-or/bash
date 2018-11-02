@@ -1,0 +1,36 @@
+# adoptive PS1 
+function a_prompt () {
+term_width=$COLUMNS
+#echo "$term_width"
+
+#userLogin
+u_name=$(whoami)
+#hostname
+h_name=$(hostname | cut -d '.' -f 1)
+
+local pwdmaxl=30
+#echo $pwdmaxl
+
+local pwdtrunc=".."
+#echo $pwdtrunc
+
+local dir_path=${PWD} #count PWD symblos
+#echo $dir_path
+
+# if number of symbols in dir_path grather then pwdmaxl use $pwmaxl default value else use dir_path coun
+pwdmaxl=$(( ${#dir_path} > pwdmaxl ? pwdmaxl : ${#dir_path} ))
+
+#if current dir matches users homeDir replace path to tilda
+new_pwd=${PWD/#$HOME/\~}
+
+#How many characters is the length of the path exceeded
+local pwdoffset=$(( ${#new_pwd} - pwdmaxl  ))
+
+if [ ${pwdoffset} -gt "0" ];
+then
+ new_pwd=${new_pwd:$pwdoffset:$pwdmaxl}
+ new_pwd=${pwdtrunc}/${new_pwd#*/}
+fi
+#PS1='--<${u_name}@${h_name}>:-<\W>-\$ '
+#PS1='-${debian_chroot:+($debian_chroot)}-\[\033[01;32m\]<${u_name}@${h_name}>\[\033[00m\]\[\033[01;34m\]-<$new_pwd>-\[\033[00m\]\$ '
+}
