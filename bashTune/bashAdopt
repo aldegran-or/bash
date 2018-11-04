@@ -8,6 +8,9 @@ u_name=$(whoami)
 #hostname
 h_name=$(hostname | cut -d '.' -f 1)
 
+cur_tty=$(tty)
+
+###########  count new_pwd #######
 local pwdmaxl=30
 #echo $pwdmaxl
 
@@ -31,6 +34,70 @@ then
  new_pwd=${new_pwd:$pwdoffset:$pwdmaxl}
  new_pwd=${pwdtrunc}/${new_pwd#*/}
 fi
+
+############ count empty characters il a line ################
+(( prompt_size=$(echo -n "--( $u_name@$h_name:$new_pwd ) -- ( $cur_tty )--" | wc -c) ))
+#echo "$prompt_size"
+(( prompt_left=term_width-prompt_size ))
+#echo "$prompt_left"
+fill_to=""
+while [ "$prompt_left" -gt "0" ] 
+do
+	fill_to="${fill_to}-"
+	(( prompt_left=prompt_left-1 ))
+done
+	#echo ${fill_to}
+################# modify prompt ##############################
+# ANSI color codes
+local RS="\[\033[0m\]"    # reset
+local HC="\[\033[1m\]"    # hicolor
+local UL="\[\033[4m\]"    # underline
+local INV="\[\033[7m\]"   # inverse background and foreground
+local FBLK="\[\033[30m\]" # foreground black
+local FRED="\[\033[31m\]" # foreground red
+local FGRN="\[\033[32m\]" # foreground green
+local FYEL="\[\033[33m\]" # foreground yellow
+local FBLE="\[\033[34m\]" # foreground blue
+local FMAG="\[\033[35m\]" # foreground magenta
+local FCYN="\[\033[36m\]" # foreground cyan
+local FWHT="\[\033[37m\]" # foreground white
+local BBLK="\[\033[40m\]" # background black
+local BRED="\[\033[41m\]" # background red
+local BGRN="\[\033[42m\]" # background green
+local BYEL="\[\033[43m\]" # background yellow
+local BBLE="\[\033[44m\]" # background blue
+local BMAG="\[\033[45m\]" # background magenta
+local BCYN="\[\033[46m\]" # background cyan
+new_prompt_view='--( $u_name@$h_name:$new_pwd ) -${fill_to}- ( $cur_tty )--'
+	#echo ${new_prompt_view}
+	
+#inserted ftom bashrc to choose a prompt view 
+#If docker-mashine used add to PS1 
+# $(__docker_machine_ps1)
+# $(__docker_machine_ps1 " [%s]")
+if [ "$color_prompt" = yes ] && [ -x /usr/local/bin/docker-mashine ]; then
+		echo "first chanse PS1 used + docker_mashine" #for debug
+		PROMPT_COMMAND=a_prompt
+		#PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]$(__docker_machine_ps1 " [%s]")\$> '
+elif [ "$color_prompt" = yes ]; then
+		echo "first.2 chanse PS1 used no docker_mashine" #for debug
+		PROMPT_COMMAND=a_prompt
+		#PS1='-${debian_chroot:+($debian_chroot)}-\[\033[01;32m\]<${u_name}@${h_name}>\[\033[00m\]\[\033[01;34m\]-<$new_pwd>-\[\033[00m\]\$> '
+		#unset PS1	
+		#PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\W\[\033[00m\]\$ '
+elif [ "$TERM" = xterm ] && [ -x /usr/local/bin/docker-mashine ]; then
+		echo "second chanse PS1 used"
+		PROMPT_COMMAND=a_prompt
+		#PS1='${debian_chroot:+($debian_chroot)}${u_name}@${h_name}:${new_pwd}$(__docker_machine_ps1 " [%s]")\$> '
+else
+		echo "second.2 chanse PS1 used"
+		PROMPT_COMMAND=a_prompt
+		#ps1='${new_prompt_view}\n\$> '
+		#PS1="${FBLE}${new_prompt_view}${RS}\n\$>"
+		#PS1='${debian_chroot:+($debian_chroot)}${u_name}@${h_name}:${new_pwd}\n\$> '
+PS1="${FBLE}${new_prompt_view}${RS}\n\$>"
+
+
 #PS1='--<${u_name}@${h_name}>:-<\W>-\$ '
 #PS1='-${debian_chroot:+($debian_chroot)}-\[\033[01;32m\]<${u_name}@${h_name}>\[\033[00m\]\[\033[01;34m\]-<$new_pwd>-\[\033[00m\]\$ '
 }

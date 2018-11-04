@@ -1,5 +1,15 @@
 f_term_width() {
 local __resultvar=$1
-local b='some val'
-eval $__resultvar="'$b'"
+local b=$2
+eval $__resultvar="$b"
 }
+#function in $1 $2 out as $1var=$2
+#if [ -f ./function ]; then
+#	source ./function
+#else
+#	echo "functions file not found"
+#fi
+#col_num=$COLUMNS
+#f_term_width columns $col_num
+##result=$(f_term_width)
+#echo $columns

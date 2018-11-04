@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -vn
 OLDIFS=$IFS
 IFS=","
 while read prod price quantity

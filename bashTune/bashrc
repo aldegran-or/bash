@@ -20,27 +20,6 @@ else
 	TERM=xterm
 fi
 
-# ANSI color codes
-RS="\[\033[0m\]"    # reset
-HC="\[\033[1m\]"    # hicolor
-UL="\[\033[4m\]"    # underline
-INV="\[\033[7m\]"   # inverse background and foreground
-FBLK="\[\033[30m\]" # foreground black
-FRED="\[\033[31m\]" # foreground red
-FGRN="\[\033[32m\]" # foreground green
-FYEL="\[\033[33m\]" # foreground yellow
-FBLE="\[\033[34m\]" # foreground blue
-FMAG="\[\033[35m\]" # foreground magenta
-FCYN="\[\033[36m\]" # foreground cyan
-FWHT="\[\033[37m\]" # foreground white
-BBLK="\[\033[40m\]" # background black
-BRED="\[\033[41m\]" # background red
-BGRN="\[\033[42m\]" # background green
-BYEL="\[\033[43m\]" # background yellow
-BBLE="\[\033[44m\]" # background blue
-BMAG="\[\033[45m\]" # background magenta
-BCYN="\[\033[46m\]" # background cyan
-BWHT="\[\033[47m\]" # background white
 # If not running interactively, don't do anything
 case $- in
     *i*) ;;
@@ -106,29 +85,25 @@ fi
 # $(__docker_machine_ps1)
 # $(__docker_machine_ps1 " [%s]")
 if [ "$color_prompt" = yes ] && [ -x /usr/local/bin/docker-mashine ]; then
-		#echo "first chanse PS1 used" #for debug
+		echo "first chanse PS1 used + docker_mashine" #for debug
 		PROMPT_COMMAND=a_prompt
-		PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]$(__docker_machine_ps1 " [%s]")\$> '
+		#PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]$(__docker_machine_ps1 " [%s]")\$> '
 elif [ "$color_prompt" = yes ]; then
-		#echo "first.2 chanse PS1 used" #for debug
-		#if [ -f ~/.bashAdopt ]; then
-		#        . ~/.bashAdopt
-		#        echo "file bashAdopt found"
-		#else
-		#	echo "file bashAdopt not found"
-		#fi
+		echo "first.2 chanse PS1 used no docker_mashine" #for debug
 		PROMPT_COMMAND=a_prompt
-		PS1='-${debian_chroot:+($debian_chroot)}-\[\033[01;32m\]<${u_name}@${h_name}>\[\033[00m\]\[\033[01;34m\]-<$new_pwd>-\[\033[00m\]\$> '
+		#PS1='-${debian_chroot:+($debian_chroot)}-\[\033[01;32m\]<${u_name}@${h_name}>\[\033[00m\]\[\033[01;34m\]-<$new_pwd>-\[\033[00m\]\$> '
 		#unset PS1	
 		#PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\W\[\033[00m\]\$ '
 elif [ "$TERM" = xterm ] && [ -x /usr/local/bin/docker-mashine ]; then
-		#echo "second chanse PS1 used"
+		echo "second chanse PS1 used"
 		PROMPT_COMMAND=a_prompt
-		PS1='${debian_chroot:+($debian_chroot)}${u_name}@${h_name}:${new_pwd}$(__docker_machine_ps1 " [%s]")\$> '
+		#PS1='${debian_chroot:+($debian_chroot)}${u_name}@${h_name}:${new_pwd}$(__docker_machine_ps1 " [%s]")\$> '
 else
-		#echo "second.2 chanse PS1 used"
+		echo "second.2 chanse PS1 used"
 		PROMPT_COMMAND=a_prompt
-		PS1='${debian_chroot:+($debian_chroot)}${u_name}@${h_name}:${new_pwd}\n\$> '
+		#ps1='${new_prompt_view}\n\$> '
+		#PS1="${FBLE}${new_prompt_view}${RS}\n\$>"
+		#PS1='${debian_chroot:+($debian_chroot)}${u_name}@${h_name}:${new_pwd}\n\$> '
 fi
 
 #unset color_prompt force_color_prompt
