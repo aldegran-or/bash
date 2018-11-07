@@ -2,13 +2,13 @@
 function a_prompt () {
 term_width=$COLUMNS
 #echo "$term_width"
-
 #userLogin
-u_name=$(whoami)
+local u_name=$(whoami)
 #hostname
 h_name=$(hostname | cut -d '.' -f 1)
 
 cur_tty=$(tty)
+
 
 ###########  count new_pwd #######
 local pwdmaxl=30
@@ -46,7 +46,7 @@ do
 	fill_to="${fill_to}-"
 	(( prompt_left=prompt_left-1 ))
 done
-	#echo ${fill_to}
+#	echo ${fill_to}
 ################# modify prompt ##############################
 # ANSI color codes
 local RS="\[\033[0m\]"    # reset
@@ -68,23 +68,25 @@ local BYEL="\[\033[43m\]" # background yellow
 local BBLE="\[\033[44m\]" # background blue
 local BMAG="\[\033[45m\]" # background magenta
 local BCYN="\[\033[46m\]" # background cyan
-new_prompt_view='--( $u_name@$h_name:$new_pwd ) -${fill_to}- ( $cur_tty )--'
+#new_prompt_view="--${FBLE}( $u_name@$h_name:$new_pwd )${RS} -${fill_to}- ( $cur_tty )--"
 	#echo ${new_prompt_view}
-if [ "$color_prompt" = yes ] && [ -x /usr/local/bin/docker-mashine ]; then
-		echo "first chanse PS1 used + docker_mashine" #for debug
-		#PROMPT_COMMAND=a_prompt
-		PS1="${FBLE}${new_prompt_view}${RS}\n\$>"
+if [ "$color_prompt" = yes ] && [ -x /usr/local/bin/docker-machine ]; then
+		#echo "first chanse PS1 used + docker_mashine" #for debug
+		PS1="${FBLE}--${RS}${FCYN}( $u_name@$h_name:$new_pwd )${RS} ${FBLE}-${fill_to}-${RS} ${FGRN}( ${cur_tty} )${RS}${FBLE}--${RS}\n${FWHT}\$>${RS}"
 elif [ "$color_prompt" = yes ]; then
-		echo "first.2 chanse PS1 used no docker_mashine" #for debug
-		#PROMPT_COMMAND=a_prompt
-		PS1="${FBLE}${new_prompt_view}${RS}\n\$>"
-elif [ "$TERM" = xterm ] && [ -x /usr/local/bin/docker-mashine ]; then
-		echo "second chanse PS1 used"
-		#PROMPT_COMMAND=a_prompt
-		PS1="${FBLE}${new_prompt_view}${RS}\n\$>"
+		#echo "first.2 chanse PS1 used no docker_machine" #for debug
+		PS1="${FBLE}--${RS}${FCYN}( $u_name@$h_name:$new_pwd )${RS} ${FBLE}-${fill_to}-${RS} ${FGRN}( ${cur_tty} )${RS}${FBLE}--${RS}\n${FWHT}\$>${RS}"
+elif [ "$TERM" = xterm ] && [ -x /usr/local/bin/docker-machine ]; then
+		#echo "second chanse PS1 used"
+		PS1="${FBLE}--${RS}${FCYN}( $u_name@$h_name:$new_pwd )${RS} ${FBLE}-${fill_to}-${RS} ${FGRN}( ${cur_tty} )${RS}${FBLE}--${RS}\n${FWHT}\$>${RS}"
 else
-		echo "second.2 chanse PS1 used"
-		#PROMPT_COMMAND=a_prompt
-		PS1="${FBLE}${new_prompt_view}${RS}\n\$>"
+		#echo "second.2 chanse PS1 used"
+		PS1="${FBLE}--${RS}${FCYN}( $u_name@$h_name:$new_pwd )${RS} ${FBLE}-${fill_to}-${RS} ${FGRN}( ${cur_tty} )${RS}${FBLE}--${RS}\n${FWHT}\$>${RS}"
 fi
 }
+
+
+PROMPT_COMMAND=a_prompt
+
+
+
