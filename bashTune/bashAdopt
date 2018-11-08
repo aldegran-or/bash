@@ -35,7 +35,9 @@ then
  new_pwd=${pwdtrunc}/${new_pwd#*/}
 fi
 
-############ count empty characters il a line ################
+docker_m=$(__docker_machine_ps1 " [%s]")
+#echo ${docker_m}
+########### count empty characters il a line ################
 (( prompt_size=$(echo -n "--( $u_name@$h_name:$new_pwd ) -- ( $cur_tty )--" | wc -c) ))
 #echo "$prompt_size"
 (( prompt_left=term_width-prompt_size ))
@@ -72,13 +74,13 @@ local BCYN="\[\033[46m\]" # background cyan
 	#echo ${new_prompt_view}
 if [ "$color_prompt" = yes ] && [ -x /usr/local/bin/docker-machine ]; then
 		#echo "first chanse PS1 used + docker_mashine" #for debug
-		PS1="${FBLE}--${RS}${FCYN}( $u_name@$h_name:$new_pwd )${RS} ${FBLE}-${fill_to}-${RS} ${FGRN}( ${cur_tty} )${RS}${FBLE}--${RS}\n${FWHT}\$>${RS}"
+		PS1="${FBLE}--${RS}${FCYN}( $u_name@$h_name:$new_pwd )${RS} ${FBLE}-${fill_to}-${RS} ${FGRN}( ${cur_tty} )${RS}${FBLE}--${RS}\n${INV}${FWHT}${docker_m}\$>${RS}"
 elif [ "$color_prompt" = yes ]; then
 		#echo "first.2 chanse PS1 used no docker_machine" #for debug
 		PS1="${FBLE}--${RS}${FCYN}( $u_name@$h_name:$new_pwd )${RS} ${FBLE}-${fill_to}-${RS} ${FGRN}( ${cur_tty} )${RS}${FBLE}--${RS}\n${FWHT}\$>${RS}"
 elif [ "$TERM" = xterm ] && [ -x /usr/local/bin/docker-machine ]; then
 		#echo "second chanse PS1 used"
-		PS1="${FBLE}--${RS}${FCYN}( $u_name@$h_name:$new_pwd )${RS} ${FBLE}-${fill_to}-${RS} ${FGRN}( ${cur_tty} )${RS}${FBLE}--${RS}\n${FWHT}\$>${RS}"
+		PS1="${FBLE}--${RS}${FCYN}( $u_name@$h_name:$new_pwd )${RS} ${FBLE}-${fill_to}-${RS} ${FGRN}( ${cur_tty} )${RS}${FBLE}--${RS}\n${FWHT}${docker_m}\$>${RS}"
 else
 		#echo "second.2 chanse PS1 used"
 		PS1="${FBLE}--${RS}${FCYN}( $u_name@$h_name:$new_pwd )${RS} ${FBLE}-${fill_to}-${RS} ${FGRN}( ${cur_tty} )${RS}${FBLE}--${RS}\n${FWHT}\$>${RS}"
