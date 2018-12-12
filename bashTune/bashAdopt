@@ -7,8 +7,12 @@ local u_name=$(whoami)
 #hostname
 h_name=$(hostname | cut -d '.' -f 1)
 
-cur_tty=$(tty)
+#cur_tty=$(tty)
+cur_date=$(date +%d.%m.%y)
+#echo "cur_date=${cur_date}"
 
+cur_time=$(date +%H:%M)
+#echo "cur_time=${cur_time}"
 
 ###########  count new_pwd #######
 local pwdmaxl=30
@@ -40,7 +44,7 @@ if [ -x /usr/local/bin/docker-machine ]; then
 	#echo ${docker_m}
 fi
 ########### count empty characters il a line ################
-(( prompt_size=$(echo -n "--( $u_name@$h_name:$new_pwd ) -- ( $cur_tty )--" | wc -c) ))
+(( prompt_size=$(echo -n "--( $u_name@$h_name:$new_pwd ) -- ( $cur_date $cur_time )--" | wc -c) ))
 #echo "$prompt_size"
 (( prompt_left=term_width-prompt_size ))
 #echo "$prompt_left"
@@ -76,16 +80,16 @@ local BCYN="\[\033[46m\]" # background cyan
 	#echo ${new_prompt_view}
 if [ "$color_prompt" = yes ] && [ -x /usr/local/bin/docker-machine ]; then
 		#echo "first chanse PS1 used + docker_mashine" #for debug
-		PS1="${FBLE}--${RS}${HC}${FCYN}( $u_name@$h_name:$new_pwd )${RS} ${FBLE}-${fill_to}-${RS} ${HC}${FGRN}( ${cur_tty} )${RS}${FBLE}--${RS}\n${INV}${FGRN}${docker_m}\$>${RS}"
+		PS1="${FBLE}--${RS}${HC}${FCYN}( $u_name@$h_name:$new_pwd )${RS} ${FBLE}-${fill_to}-${RS} ${HC}${FGRN}( ${cur_date} ${cur_time} )${RS}${FBLE}--${RS}\n${INV}${FGRN}${docker_m}\$>${RS}"
 elif [ "$color_prompt" = yes ]; then
 		#echo "first.2 chanse PS1 used no docker_machine" #for debug
-		PS1="${FBLE}--${RS}${HC}${FCYN}( $u_name@$h_name:$new_pwd )${RS} ${FBLE}-${fill_to}-${RS} ${HC}${FGRN}( ${cur_tty} )${RS}${FBLE}--${RS}\n${INV}${FGRN}\$>${RS}"
+		PS1="${FBLE}--${RS}${HC}${FCYN}( $u_name@$h_name:$new_pwd )${RS} ${FBLE}-${fill_to}-${RS} ${HC}${FGRN}( ${cur_date} ${cur_time} )${RS}${FBLE}--${RS}\n${INV}${FGRN}\$>${RS}"
 elif [ "$TERM" = xterm ] && [ -x /usr/local/bin/docker-machine ]; then
 		#echo "second chanse PS1 used"
-		PS1="${FBLE}--${RS}${HC}${FCYN}( $u_name@$h_name:$new_pwd )${RS} ${FBLE}-${fill_to}-${RS} ${HC}${FGRN}( ${cur_tty} )${RS}${FBLE}--${RS}\n${INV}${FGRN}${docker_m}\$>${RS}"
+		PS1="${FBLE}--${RS}${HC}${FCYN}( $u_name@$h_name:$new_pwd )${RS} ${FBLE}-${fill_to}-${RS} ${HC}${FGRN}( ${cur_date} ${cur_time} )${RS}${FBLE}--${RS}\n${INV}${FGRN}${docker_m}\$>${RS}"
 else
 		#echo "second.2 chanse PS1 used"
-		PS1="${FBLE}--${RS}${HC}${FCYN}( $u_name@$h_name:$new_pwd )${RS} ${FBLE}-${fill_to}-${RS} ${HC}${FGRN}( ${cur_tty} )${RS}${FBLE}--${RS}\n${INV}${FGRN}\$>${RS}"
+		PS1="${FBLE}--${RS}${HC}${FCYN}( $u_name@$h_name:$new_pwd )${RS} ${FBLE}-${fill_to}-${RS} ${HC}${FGRN}( ${cur_date} ${cur_time} )${RS}${FBLE}--${RS}\n${INV}${FGRN}\$>${RS}"
 fi
 }
 
